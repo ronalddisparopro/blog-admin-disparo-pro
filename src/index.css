@@ -199,10 +199,11 @@ h2 {
 }
 .btn-ghost {
   background: transparent;
-  color: var(--text-muted);
+  color: var(--text-main);
 }
 .btn-ghost:hover {
   background: var(--primary);
+  color: #ffffff;
 }
 
 /* Editor Layout */
