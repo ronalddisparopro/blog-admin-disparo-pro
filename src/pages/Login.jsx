@@ -34,15 +34,7 @@ export default function Login() {
         className="preview-pane-login"
         style={{ maxWidth: "400px", width: "100%" }}
       >
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "0.5rem",
-            color: "var(--primary)",
-          }}
-        >
-          Disparo Pro
-        </h1>
+        <img src="/logo-disparo-pro.svg" alt="Logo Disparo Pro" />
         <p
           style={{
             textAlign: "center",
