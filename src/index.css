@@ -1,0 +1,410 @@
+:root {
+  --primary: #eb4699;
+  --primary-hover: #e263a2;
+  --bg-main: #ffffff;
+  --bg-card: #ffffff;
+  --text-main: #1e1e1e;
+  --text-muted: #555555;
+  --border: #e7e4e4;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.auth-guard {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layout */
+.layout-container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.content-area {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+/* Typography */
+h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--bg-card);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.data-table td {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.badge-draft {
+  background: rgba(148, 163, 184, 0.2);
+  color: var(--text-muted);
+}
+.badge-published {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--success);
+}
+.badge-archived {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--danger);
+}
+
+/* Form Elements */
+
+.form-login {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.form-group {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--text-muted);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+}
+
+.btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+}
+.btn-ghost:hover {
+  background: var(--primary);
+}
+
+/* Editor Layout */
+.editor-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  height: calc(100vh - 8rem);
+}
+
+.editor-form-scroll {
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.preview-pane-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-card);
+  border-radius: 1rem;
+  padding: 2.5rem;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  gap: 16px;
+}
+.preview-pane {
+  background-color: var(--bg-card);
+  border-radius: 1rem;
+  padding: 2.5rem;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+}
+
+.preview-content {
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
+.preview-cover {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.preview-title {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.preview-meta {
+  display: flex;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+/* Tiptap Editor Styles */
+.tiptap-editor-container {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--bg-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tiptap-toolbar {
+  padding: 0.5rem;
+  background: var(--bg-main);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tiptap-toolbar button {
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.tiptap-toolbar button:hover {
+  background: var(--border);
+  color: var(--text-main);
+}
+
+.tiptap-toolbar button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.tiptap-toolbar button.is-active {
+  background: var(--primary);
+  color: white;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--border);
+  margin: 0 0.25rem;
+  align-self: center;
+}
+
+.tiptap-content-area {
+  padding: 1.5rem;
+  min-height: 400px;
+  cursor: text;
+}
+
+.tiptap-content-area .ProseMirror {
+  outline: none;
+}
+
+.tiptap-content-area .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--text-muted);
+  pointer-events: none;
+  height: 0;
+}
+
+/* Typography inside Editor */
+.ProseMirror h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.ProseMirror h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.ProseMirror h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+.ProseMirror p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.ProseMirror blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.ProseMirror a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.tiptap-content-render h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+.tiptap-content-render h2 {
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+}
+.tiptap-content-render h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.tiptap-content-render p {
+  margin-bottom: 1.25rem;
+  line-height: 1.7;
+  font-size: 1.125rem;
+}
+.tiptap-content-render ul,
+.tiptap-content-render ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.tiptap-content-render blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1.5rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+.tiptap-content-render a {
+  color: var(--primary);
+  text-decoration: underline;
+}
