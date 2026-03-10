@@ -15,13 +15,20 @@ export default function PostsList() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 10;
 
   const fetchPosts = async () => {
     setLoading(true);
-    const { data, count, error } = await supabase
+    let query = supabase
       .from("posts")
-      .select("*, categories!posts_category_id_fkey(name)", { count: "exact" })
+      .select("*, post_categories(categories(name))", { count: "exact" });
+
+    if (searchQuery) {
+      query = query.ilike("title", `%${searchQuery}%`);
+    }
+
+    const { data, count, error } = await query
       .order("created_at", { ascending: false })
       .range(page * pageSize, (page + 1) * pageSize - 1);
 
@@ -37,7 +44,7 @@ export default function PostsList() {
 
   useEffect(() => {
     fetchPosts();
-  }, [page]);
+  }, [page, searchQuery]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to archive this post?")) return;
@@ -71,6 +78,30 @@ export default function PostsList() {
         </Link>
       </div>
 
+      <div style={{ marginBottom: "1.5rem", position: "relative" }}>
+        <input
+          type="text"
+          placeholder="Pesquisar posts por título..."
+          className="form-input"
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setPage(0); // Reset to first page on search
+          }}
+          style={{ paddingLeft: "2.5rem" }}
+        />
+        <Search
+          size={18}
+          style={{
+            position: "absolute",
+            left: "0.75rem",
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: "var(--text-muted)",
+          }}
+        />
+      </div>
+
       <div
         className="preview-pane"
         style={{ padding: "0", marginBottom: "2rem" }}
@@ -82,7 +113,7 @@ export default function PostsList() {
               <th>Status</th>
               <th>Categoria</th>
               <th>Destaque</th>
-              <th>Publicado em</th>
+              <th>Criado em</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -114,13 +145,16 @@ export default function PostsList() {
                       {post.status}
                     </span>
                   </td>
-                  <td>{post.categories?.name || "Uncategorized"}</td>
+                  <td>
+                    {post.post_categories?.[0]?.categories?.name ||
+                      "Uncategorized"}
+                  </td>
                   <td>{post.is_featured ? "⭐ Yes" : "No"}</td>
                   <td
                     style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}
                   >
-                    {post.published_at
-                      ? new Date(post.published_at).toLocaleDateString()
+                    {post.created_at
+                      ? new Date(post.created_at).toLocaleDateString()
                       : "—"}
                   </td>
                   <td>

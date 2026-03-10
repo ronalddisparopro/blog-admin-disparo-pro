@@ -8,6 +8,9 @@ export function renderContent(json) {
   // If it's still a string (old format), return as is
   if (typeof json === "string") return json;
 
+  // Handle migrated WordPress format {"html": "..."}
+  if (json && typeof json === "object" && json.html) return json.html;
+
   try {
     return generateHTML(json, [
       StarterKit,

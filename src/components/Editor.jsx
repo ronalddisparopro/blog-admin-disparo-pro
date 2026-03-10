@@ -122,6 +122,14 @@ const Toolbar = ({ editor }) => {
 };
 
 export default function Editor({ content, onChange }) {
+  // Helper to get compatible content for Tiptap
+  const getInitialContent = (rawContent) => {
+    if (rawContent && typeof rawContent === "object" && rawContent.html) {
+      return rawContent.html;
+    }
+    return rawContent;
+  };
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -136,11 +144,31 @@ export default function Editor({ content, onChange }) {
         placeholder: "Comece a escrever sua história...",
       }),
     ],
-    content: content,
+    content: getInitialContent(content),
     onUpdate: ({ editor }) => {
       onChange(editor.getJSON());
     },
   });
+
+  React.useEffect(() => {
+    if (editor && content !== undefined && content !== null) {
+      const targetContent = getInitialContent(content);
+      const currentContent = editor.getJSON();
+
+      if (typeof targetContent === "string") {
+        // For HTML strings (like migrated posts), if editor is currently empty,
+        // it's likely we just loaded the post.
+        if (editor.isEmpty && targetContent.trim() !== "") {
+          editor.commands.setContent(targetContent);
+        }
+      } else if (targetContent && typeof targetContent === "object") {
+        // For JSON docs, sync only if they are different
+        if (JSON.stringify(targetContent) !== JSON.stringify(currentContent)) {
+          editor.commands.setContent(targetContent);
+        }
+      }
+    }
+  }, [content, editor]);
 
   return (
     <div className="tiptap-editor-container">

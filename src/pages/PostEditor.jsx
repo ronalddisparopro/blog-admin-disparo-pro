@@ -20,7 +20,7 @@ export default function PostEditor() {
   const fetchPost = async () => {
     const { data, error } = await supabase
       .from("posts")
-      .select("*, categories!posts_category_id_fkey(name)")
+      .select("*, post_categories(category_id, categories(name))")
       .eq("id", id)
       .single();
 
@@ -31,7 +31,9 @@ export default function PostEditor() {
     } else {
       const formattedData = {
         ...data,
-        category_name: data.categories?.name,
+        category_id:
+          data.category_id || data.post_categories?.[0]?.category_id || "",
+        category_name: data.post_categories?.[0]?.categories?.name,
       };
       setInitialData(formattedData);
       setPreviewData(formattedData);
@@ -72,12 +74,23 @@ export default function PostEditor() {
         .toLowerCase()
         .replace(/ /g, "-")
         .replace(/[^\w-]+/g, "");
-      result = await supabase.from("posts").insert([{ ...postData, slug }]);
+      result = await supabase
+        .from("posts")
+        .insert([{ ...postData, slug }])
+        .select();
     }
 
     if (result.error) {
       alert("Error saving post: " + result.error.message);
     } else {
+      const postId = id || result.data?.[0]?.id;
+      if (postId && formData.category_id) {
+        // Update post_categories join table
+        await supabase.from("post_categories").delete().eq("post_id", postId);
+        await supabase
+          .from("post_categories")
+          .insert([{ post_id: postId, category_id: formData.category_id }]);
+      }
       alert("Post saved successfully!");
       navigate("/posts");
     }
