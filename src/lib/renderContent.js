@@ -1,6 +1,7 @@
 import { generateHTML } from "@tiptap/html";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 
 export function renderContent(json) {
   if (!json) return "";
@@ -14,6 +15,7 @@ export function renderContent(json) {
   try {
     return generateHTML(json, [
       StarterKit,
+      Image,
       Link.configure({
         HTMLAttributes: {
           rel: "noopener noreferrer",

@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
   Bold,
@@ -14,6 +15,7 @@ import {
   Quote,
   Link as LinkIcon,
   Unlink,
+  Image as ImageIcon,
 } from "lucide-react";
 
 const Toolbar = ({ editor }) => {
@@ -30,6 +32,14 @@ const Toolbar = ({ editor }) => {
     }
 
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  }, [editor]);
+
+  const addImage = useCallback(() => {
+    const url = window.prompt("URL da Imagem");
+
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
   }, [editor]);
 
   return (
@@ -117,6 +127,10 @@ const Toolbar = ({ editor }) => {
       >
         <Unlink size={18} />
       </button>
+      <div className="toolbar-divider" />
+      <button type="button" onClick={addImage} title="Inserir Imagem">
+        <ImageIcon size={18} />
+      </button>
     </div>
   );
 };
@@ -133,6 +147,7 @@ export default function Editor({ content, onChange }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Image,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
