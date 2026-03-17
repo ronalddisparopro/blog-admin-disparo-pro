@@ -10,6 +10,7 @@ import Layout from "./components/Layout";
 import Login from "./pages/Login";
 import PostsList from "./pages/PostsList";
 import PostEditor from "./pages/PostEditor";
+import SetupAuthor from "./pages/SetupAuthor";
 import "./index.css";
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
                   <Route path="/posts" element={<PostsList />} />
                   <Route path="/posts/new" element={<PostEditor />} />
                   <Route path="/posts/edit/:id" element={<PostEditor />} />
+                  <Route path="/setup-author" element={<SetupAuthor />} />
                   <Route path="*" element={<Navigate to="/posts" />} />
                 </Routes>
               </Layout>

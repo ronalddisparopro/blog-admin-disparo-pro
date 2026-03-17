@@ -49,14 +49,14 @@ export default function PostEditor() {
       alert("Você precisa estar logado para salvar.");
       return;
     }
-    const author_id = user.id;
-
+    const author_id = formData.author_id || user.id;
+    
     const postData = {
       ...formData,
       author_id: author_id,
-      category_id: formData.category_id || null, // Ensure empty string is null for UUID
+      category_id: formData.category_id || null,
       reading_time: formData.reading_time || 0,
-      content_format: formData.content_format || "markdown",
+      content_format: formData.content_format || "html",
     };
 
     // Remove UI-only fields

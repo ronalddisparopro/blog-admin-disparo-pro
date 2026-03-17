@@ -205,6 +205,12 @@ h2 {
   background: var(--primary);
   color: #ffffff;
 }
+.btn-delete {
+  color: var(--danger);
+}
+.btn-delete:hover {
+  color: #ffffff;
+}
 
 /* Editor Layout */
 .editor-layout {

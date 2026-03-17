@@ -47,15 +47,18 @@ export default function PostsList() {
   }, [page, searchQuery]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to archive this post?")) return;
+    if (!window.confirm("Tem certeza que deseja excluir permanentemente este post?")) return;
+
+    // Delete categories associations first
+    await supabase.from("post_categories").delete().eq("post_id", id);
 
     const { error } = await supabase
       .from("posts")
-      .update({ status: "archived" })
+      .delete()
       .eq("id", id);
 
     if (error) {
-      alert("Error archiving post: " + error.message);
+      alert("Error deleting post: " + error.message);
     } else {
       fetchPosts();
     }
@@ -168,8 +171,8 @@ export default function PostsList() {
                       </Link>
                       <button
                         onClick={() => handleDelete(post.id)}
-                        className="btn btn-ghost"
-                        style={{ padding: "0.5rem", color: "var(--danger)" }}
+                        className="btn btn-ghost btn-delete"
+                        style={{ padding: "0.5rem" }}
                       >
                         <Trash2 size={18} />
                       </button>

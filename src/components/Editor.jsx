@@ -146,7 +146,10 @@ export default function Editor({ content, onChange }) {
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        // Disable extensions included here to add them manually with custom config
+        link: false,
+      }),
       Image,
       Link.configure({
         openOnClick: false,
@@ -161,7 +164,7 @@ export default function Editor({ content, onChange }) {
     ],
     content: getInitialContent(content),
     onUpdate: ({ editor }) => {
-      onChange(editor.getJSON());
+      onChange({ html: editor.getHTML() });
     },
   });
 

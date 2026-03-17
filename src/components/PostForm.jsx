@@ -3,6 +3,23 @@ import { Upload, X, Check } from "lucide-react";
 import Editor from "./Editor";
 import { supabase } from "../lib/supabase";
 
+// Helper to extract plain text for reading time
+const extractText = (node) => {
+  if (!node) return "";
+  if (typeof node === "string") {
+    // Basic HTML tag stripping
+    return node.replace(/<[^>]*>/g, " ");
+  }
+  if (node.html && typeof node.html === "string") {
+    return node.html.replace(/<[^>]*>/g, " ");
+  }
+  if (node.type === "text") return node.text;
+  if (node.content && Array.isArray(node.content)) {
+    return node.content.map(extractText).join(" ");
+  }
+  return "";
+};
+
 export default function PostForm({ initialData, onSave, onChange }) {
   const [formData, setFormData] = useState({
     title: "",
@@ -48,7 +65,8 @@ export default function PostForm({ initialData, onSave, onChange }) {
     setFormData(updated);
 
     // Calculate reading time before passing to preview
-    const words = updated.content?.split(/\s+/).filter(Boolean).length || 0;
+    const textContent = extractText(updated.content);
+    const words = textContent.split(/\s+/).filter(Boolean).length || 0;
     const readingTime = Math.ceil(words / 200);
 
     onChange({
@@ -148,16 +166,6 @@ export default function PostForm({ initialData, onSave, onChange }) {
             onChange={(json) => {
               const updated = { ...formData, content: json };
               setFormData(updated);
-
-              // Helper to extract plain text for reading time
-              const extractText = (node) => {
-                if (!node) return "";
-                if (node.type === "text") return node.text;
-                if (node.content && Array.isArray(node.content)) {
-                  return node.content.map(extractText).join(" ");
-                }
-                return "";
-              };
 
               const textContent = extractText(json);
               const words =
